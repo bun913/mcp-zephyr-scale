@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { ZephyrV2Client } from "zephyr-api-client";
+import { createZephyrClient } from "./clients/index.js";
 import { logger } from "./logger.js";
 
 /**
@@ -25,9 +25,7 @@ function validateEnvironment(): {
 const { apiToken, projectKey } = validateEnvironment();
 
 // Initialize Zephyr client
-const zephyrClient = new ZephyrV2Client({
-	apiToken,
-});
+const zephyrClient = createZephyrClient(apiToken);
 
 // Create McpServer
 const server = new McpServer({
