@@ -25,7 +25,7 @@ This MCP server provides comprehensive access to Zephyr Scale API v2, enabling:
 | `getTestCase` | Get details of a specific test case |
 | `updateTestCase` | Update an existing test case |
 | `getTestCaseTestSteps` | Get test steps for a test case |
-| `createTestCaseTestSteps` | Create or append test steps to a test case |
+| `createTestCaseTestSteps` | Create or append test steps to a test case (supports APPEND/OVERWRITE modes). **Tip:** Use OVERWRITE mode for the first time to avoid unwanted empty placeholder steps |
 | `createTestCaseWebLink` | Create a web link for a test case |
 | `createTestCaseIssueLink` | Create an issue link for a test case |
 
