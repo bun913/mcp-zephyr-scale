@@ -2,6 +2,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { createZephyrClient } from "./clients/index.js";
+import { registerAllTools } from "./server/api/index.js";
 import { logger } from "./logger.js";
 
 /**
@@ -33,27 +34,8 @@ const server = new McpServer({
 	version: "0.2.0",
 });
 
-// Register a simple tool for testing
-server.tool(
-	"hello",
-	"Say hello - a simple test tool",
-	{
-		name: {
-			type: "string",
-			description: "Name to greet",
-		},
-	},
-	async ({ name }) => {
-		return {
-			content: [
-				{
-					type: "text",
-					text: `Hello, ${name}! This is Zephyr Scale MCP Server. Connected to project: ${projectKey}`,
-				},
-			],
-		};
-	},
-);
+// Register all MCP tools
+registerAllTools(server, zephyrClient);
 
 // Main execution
 const main = async () => {
