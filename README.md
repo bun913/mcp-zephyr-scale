@@ -94,6 +94,61 @@ This MCP server provides comprehensive access to Zephyr Scale API v2, enabling:
 |-----------|-------------|
 | `deleteLink` | Delete a link |
 
+## Installation
+
+### Using with NPM (Recommended)
+
+Add the following configuration to your `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "zephyr-scale": {
+      "command": "npx",
+      "args": ["-y", "mcp-zephyr-scale"],
+      "env": {
+        "ZEPHYR_API_TOKEN": "your-api-token-here",
+        "JIRA_PROJECT_KEY": "YOUR_PROJECT"
+      }
+    },
+    "atlassian": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"]
+    }
+  }
+}
+```
+
+**Why use both servers?**
+- **Zephyr Scale MCP**: Provides test management functionality (test cases, test plans, test cycles, test executions)
+- **Atlassian MCP**: Provides Jira issue management and Confluence documentation access
+
+This combination allows you to create Jira issues with API specifications and link them to test cases, creating full traceability from requirements to test execution.
+
+### Required Environment Variables
+
+- `ZEPHYR_API_TOKEN`: Your Zephyr Scale API token
+- `JIRA_PROJECT_KEY`: Your Jira project key (e.g., "KAN")
+
+### How to Get Your Zephyr API Token
+
+1. In Jira, click your profile picture
+2. Select "Zephyr API keys"
+3. Generate a new API key
+
+For more information, see the [Zephyr Scale documentation](https://support.smartbear.com/zephyr-scale-cloud/docs/en/rest-api/api-access-tokens-management.html).
+
+### Atlassian MCP Authentication
+
+When you first add the Atlassian MCP Server:
+1. The server will prompt you to authorize access via OAuth
+2. You'll be redirected to Atlassian to complete authentication
+3. Select which products to allow access (Jira and/or Confluence)
+4. Click "Approve" to complete the authentication
+
+If your authentication expires, you can reconnect using:
+- **Claude Code**: Run the `/mcp` command to manage MCP server connections and select "Reconnect" for the Atlassian server
+
 ## Development
 
 ### Setup
@@ -113,24 +168,14 @@ npm run format
 
 # Lint code
 npm run lint
+
+# Check code (lint + format)
+npm run check
 ```
-
-### Required Environment Variables
-
-- `ZEPHYR_API_TOKEN`: Your Zephyr Scale API token
-- `JIRA_PROJECT_KEY`: Your Jira project key (e.g., "KAN")
-
-### How to Get Your Zephyr API Token
-
-1. In Jira, click your profile picture
-2. Select "Zephyr API keys"
-3. Generate a new API key
-
-For more information, see the [Zephyr Scale documentation](https://support.smartbear.com/zephyr-scale-cloud/docs/en/rest-api/api-access-tokens-management.html).
 
 ### Testing Local Build
 
-Add the following configuration to your `.mcp.json`:
+For development, you can test the local build instead of the NPM package. Add the following configuration to your `.mcp.json`:
 
 ```json
 {
@@ -148,43 +193,6 @@ Add the following configuration to your `.mcp.json`:
 ```
 
 Replace `/absolute/path/to/mcp-zephyr-scale` with the actual absolute path to your local repository.
-
-### Using with Atlassian (JIRA) MCP Server
-
-Since Zephyr Scale is a Jira plugin, it's recommended to use the official Atlassian MCP Server alongside this Zephyr Scale MCP Server. This allows you to access both JIRA and Zephyr Scale functionality without duplicating JIRA-related features.
-
-Add the Atlassian MCP Server to your `.mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "zephyr-scale": {
-      "command": "node",
-      "args": ["/absolute/path/to/mcp-zephyr-scale/dist/index.js"],
-      "env": {
-        "ZEPHYR_API_TOKEN": "your-api-token-here",
-        "JIRA_PROJECT_KEY": "YOUR_PROJECT"
-      }
-    },
-    "atlassian": {
-      "url": "https://mcp.atlassian.com/v1/sse"
-    }
-  }
-}
-```
-
-#### Initial Authentication
-
-When you first add the Atlassian MCP Server:
-1. The server will prompt you to authorize access via OAuth
-2. You'll be redirected to Atlassian to complete authentication
-3. Select which products to allow access (Jira and/or Confluence)
-4. Click "Approve" to complete the authentication
-
-#### Reauthentication
-
-If your authentication expires, you can reconnect using:
-- **Claude Code**: Run the `/mcp` command to manage MCP server connections and select "Reconnect" for the Atlassian server
 
 ## License
 

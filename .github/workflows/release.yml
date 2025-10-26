@@ -52,7 +52,7 @@ jobs:
           title: "Update package version to ${{ steps.semver.outputs.version }}"
           body: "Automated PR to update package version"
           branch: "update-version-${{ steps.semver.outputs.version }}"
-          base: "master"
+          base: "main"
           commit-message: "chore: Update package version to ${{ steps.semver.outputs.version }}"
           add-paths: |
             package.json
