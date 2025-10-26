@@ -7,6 +7,10 @@ import { registerTestCaseTools } from "./cases.js";
 import { registerFolderTools } from "./folders.js";
 import { registerTestPlanTools } from "./plans.js";
 import { registerTestCycleTools } from "./cycles.js";
+import { registerTestExecutionTools } from "./executions.js";
+import { registerStatusTools } from "./statuses.js";
+import { registerPriorityTools } from "./priorities.js";
+import { registerEnvironmentTools } from "./environments.js";
 
 /**
  * Register all Zephyr Scale MCP tools
@@ -27,7 +31,15 @@ export function registerAllTools(
 	// Register test cycle tools
 	registerTestCycleTools(server, zephyrClient);
 
-	// Future: Register other tools
-	// registerTestExecutionTools(server, zephyrClient);
-	// registerEnvironmentTools(server, zephyrClient);
+	// Register test execution tools
+	registerTestExecutionTools(server, zephyrClient);
+
+	// Register status tools
+	registerStatusTools(server, zephyrClient);
+
+	// Register priority tools (read-only)
+	registerPriorityTools(server, zephyrClient);
+
+	// Register environment tools (read-only)
+	registerEnvironmentTools(server, zephyrClient);
 }
