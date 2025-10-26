@@ -1,6 +1,33 @@
 #!/usr/bin/env node
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { ZephyrV2Client } from "zephyr-api-client";
+import { logger } from "./logger.js";
+
+/**
+ * Validate required environment variables
+ */
+function validateEnvironment(): {
+	apiToken: string;
+	projectKey: string;
+} {
+	const apiToken = process.env.ZEPHYR_API_TOKEN;
+	const projectKey = process.env.JIRA_PROJECT_KEY;
+
+	if (!apiToken || !projectKey) {
+		throw new Error("ZEPHYR_API_TOKEN and JIRA_PROJECT_KEY must be set");
+	}
+
+	return { apiToken, projectKey };
+}
+
+// Validate environment variables
+const { apiToken, projectKey } = validateEnvironment();
+
+// Initialize Zephyr client
+const zephyrClient = new ZephyrV2Client({
+	apiToken,
+});
 
 // Create McpServer
 const server = new McpServer({
@@ -23,7 +50,7 @@ server.tool(
 			content: [
 				{
 					type: "text",
-					text: `Hello, ${name}! This is Zephyr Scale MCP Server.`,
+					text: `Hello, ${name}! This is Zephyr Scale MCP Server. Connected to project: ${projectKey}`,
 				},
 			],
 		};
@@ -33,15 +60,16 @@ server.tool(
 // Main execution
 const main = async () => {
 	try {
-		console.error("Starting Zephyr Scale MCP Server (stdio mode)...");
+		logger.info("Starting Zephyr Scale MCP Server (stdio mode)...");
+		logger.info(`Project Key: ${projectKey}`);
 
 		// Create and connect transport
 		const transport = new StdioServerTransport();
 		await server.connect(transport);
 
-		console.error("Zephyr Scale MCP Server connected via stdio");
+		logger.info("Zephyr Scale MCP Server connected via stdio");
 	} catch (error) {
-		console.error("Error starting Zephyr Scale MCP Server:", error);
+		logger.error("Error starting Zephyr Scale MCP Server:", error);
 		process.exit(1);
 	}
 };
