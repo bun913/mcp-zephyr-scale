@@ -254,7 +254,7 @@ export function registerTestCaseTools(
 	// Create test case test steps
 	server.tool(
 		"createTestCaseTestSteps",
-		"Create or append test steps to a test case / テストケースにテストステップを作成または追加します",
+		"Create or append test steps to a test case (supports APPEND/OVERWRITE modes). Tip: Use OVERWRITE mode for the first time to avoid unwanted empty placeholder steps / テストケースにテストステップを作成または追加します（APPENDとOVERWRITEモードをサポート）。ヒント：初回は不要な空のプレースホルダーステップを避けるため、OVERWRITEモードを使用してください",
 		createTestCaseTestStepsSchema,
 		async ({ testCaseKey, mode, items }) => {
 			try {
