@@ -21,6 +21,7 @@
   "scripts": {
     "format": "biome format --write ./src",
     "lint": "biome lint ./src",
+    "check": "biome check ./src",
     "test": "vitest ./test --reporter=verbose --coverage",
     "test:ci": "vitest run ./test --silent --coverage --reporter=verbose",
     "build": "bun build ./src/index.ts --outdir ./dist --target node --format esm && tsc --emitDeclarationOnly",
