@@ -107,6 +107,23 @@ export const createTestCaseTestStepsSchema = {
 		.describe("Array of test steps to add"),
 };
 
+/**
+ * Schema for creating a test case web link
+ */
+export const createTestCaseWebLinkSchema = {
+	testCaseKey: z.string().describe("Test case key (e.g., 'KAN-T1')"),
+	url: z.string().url().describe("The web link URL"),
+	description: z.string().optional().describe("The link description"),
+};
+
+/**
+ * Schema for creating a test case issue link
+ */
+export const createTestCaseIssueLinkSchema = {
+	testCaseKey: z.string().describe("Test case key (e.g., 'KAN-T1')"),
+	issueId: z.number().describe("The Jira issue ID"),
+};
+
 // Create Zod objects from each schema
 export const ListTestCasesInput = z.object(listTestCasesSchema);
 export const CreateTestCaseInput = z.object(createTestCaseSchema);

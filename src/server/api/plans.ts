@@ -8,6 +8,9 @@ import {
 	listTestPlansSchema,
 	createTestPlanSchema,
 	getTestPlanSchema,
+	createTestPlanWebLinkSchema,
+	createTestPlanIssueLinkSchema,
+	createTestPlanTestCycleLinkSchema,
 } from "../../shared/schemas/plans.js";
 
 /**
@@ -139,6 +142,130 @@ export function registerTestPlanTools(
 			} catch (error) {
 				const errorResponse = createErrorResponse(
 					`Error retrieving test plan: ${testPlanIdOrKey}`,
+					error,
+				);
+				return {
+					content: [{ type: "text", text: errorResponse.text }],
+					isError: true,
+				};
+			}
+		},
+	);
+
+	/**
+	 * Create a web link for a test plan
+	 */
+	server.tool(
+		"createTestPlanWebLink",
+		"Create a web link for a test plan / テストプランにWebリンクを作成します",
+		createTestPlanWebLinkSchema,
+		async ({ testPlanIdOrKey, url, description }) => {
+			try {
+				const result = await zephyrClient.testplans.createTestPlanWebLink(
+					testPlanIdOrKey,
+					{
+						url,
+						description,
+					},
+					{},
+				);
+
+				const response = createSuccessResponse(
+					"Web link created successfully",
+					{
+						link: result.data,
+					},
+				);
+
+				return {
+					content: [{ type: "text", text: response.text }],
+					isError: false,
+				};
+			} catch (error) {
+				const errorResponse = createErrorResponse(
+					`Error creating web link for test plan ${testPlanIdOrKey}`,
+					error,
+				);
+				return {
+					content: [{ type: "text", text: errorResponse.text }],
+					isError: true,
+				};
+			}
+		},
+	);
+
+	/**
+	 * Create an issue link for a test plan
+	 */
+	server.tool(
+		"createTestPlanIssueLink",
+		"Create an issue link for a test plan / テストプランにイシューリンクを作成します",
+		createTestPlanIssueLinkSchema,
+		async ({ testPlanIdOrKey, issueId }) => {
+			try {
+				const result = await zephyrClient.testplans.createTestPlanIssueLink(
+					testPlanIdOrKey,
+					{
+						issueId,
+					},
+					{},
+				);
+
+				const response = createSuccessResponse(
+					"Issue link created successfully",
+					{
+						link: result.data,
+					},
+				);
+
+				return {
+					content: [{ type: "text", text: response.text }],
+					isError: false,
+				};
+			} catch (error) {
+				const errorResponse = createErrorResponse(
+					`Error creating issue link for test plan ${testPlanIdOrKey}`,
+					error,
+				);
+				return {
+					content: [{ type: "text", text: errorResponse.text }],
+					isError: true,
+				};
+			}
+		},
+	);
+
+	/**
+	 * Create a test cycle link for a test plan
+	 */
+	server.tool(
+		"createTestPlanTestCycleLink",
+		"Create a test cycle link for a test plan / テストプランにテストサイクルリンクを作成します",
+		createTestPlanTestCycleLinkSchema,
+		async ({ testPlanIdOrKey, testCycleIdOrKey }) => {
+			try {
+				const result = await zephyrClient.testplans.createTestPlanTestCycleLink(
+					testPlanIdOrKey,
+					{
+						testCycleIdOrKey,
+					},
+					{},
+				);
+
+				const response = createSuccessResponse(
+					"Test cycle link created successfully",
+					{
+						link: result.data,
+					},
+				);
+
+				return {
+					content: [{ type: "text", text: response.text }],
+					isError: false,
+				};
+			} catch (error) {
+				const errorResponse = createErrorResponse(
+					`Error creating test cycle link for test plan ${testPlanIdOrKey}`,
 					error,
 				);
 				return {

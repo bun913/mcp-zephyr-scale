@@ -40,3 +40,32 @@ export const createTestPlanSchema = {
 export const getTestPlanSchema = {
 	testPlanIdOrKey: z.string().describe("Test plan ID or key (e.g., 'KAN-P1')"),
 };
+
+/**
+ * Schema for creating a test plan web link
+ */
+export const createTestPlanWebLinkSchema = {
+	testPlanIdOrKey: z.string().describe("Test plan ID or key (e.g., 'KAN-P1')"),
+	url: z.string().url().describe("The web link URL"),
+	description: z
+		.string()
+		.describe("The link description (required for test plans)"),
+};
+
+/**
+ * Schema for creating a test plan issue link
+ */
+export const createTestPlanIssueLinkSchema = {
+	testPlanIdOrKey: z.string().describe("Test plan ID or key (e.g., 'KAN-P1')"),
+	issueId: z.number().describe("The Jira issue ID"),
+};
+
+/**
+ * Schema for creating a test plan test cycle link
+ */
+export const createTestPlanTestCycleLinkSchema = {
+	testPlanIdOrKey: z.string().describe("Test plan ID or key (e.g., 'KAN-P1')"),
+	testCycleIdOrKey: z
+		.string()
+		.describe("Test cycle ID or key (e.g., 'KAN-R1')"),
+};

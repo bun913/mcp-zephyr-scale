@@ -61,3 +61,13 @@ export const getTestExecutionSchema = {
 		.string()
 		.describe("Test execution ID or key (e.g., 'KAN-E1')"),
 };
+
+/**
+ * Schema for creating a test execution issue link
+ */
+export const createTestExecutionIssueLinkSchema = {
+	testExecutionIdOrKey: z
+		.string()
+		.describe("Test execution ID or key (e.g., 'KAN-E1')"),
+	issueId: z.number().describe("The Jira issue ID"),
+};

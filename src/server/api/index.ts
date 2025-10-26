@@ -11,6 +11,7 @@ import { registerTestExecutionTools } from "./executions.js";
 import { registerStatusTools } from "./statuses.js";
 import { registerPriorityTools } from "./priorities.js";
 import { registerEnvironmentTools } from "./environments.js";
+import { registerLinkTools } from "./links.js";
 
 /**
  * Register all Zephyr Scale MCP tools
@@ -42,4 +43,7 @@ export function registerAllTools(
 
 	// Register environment tools (read-only)
 	registerEnvironmentTools(server, zephyrClient);
+
+	// Register link tools
+	registerLinkTools(server, zephyrClient);
 }

@@ -9,6 +9,8 @@ import {
 	createTestCycleSchema,
 	getTestCycleSchema,
 	updateTestCycleSchema,
+	createTestCycleWebLinkSchema,
+	createTestCycleIssueLinkSchema,
 } from "../../shared/schemas/cycles.js";
 
 /**
@@ -209,6 +211,89 @@ export function registerTestCycleTools(
 			} catch (error) {
 				const errorResponse = createErrorResponse(
 					`Error updating test cycle: ${testCycleIdOrKey}`,
+					error,
+				);
+				return {
+					content: [{ type: "text", text: errorResponse.text }],
+					isError: true,
+				};
+			}
+		},
+	);
+
+	/**
+	 * Create a web link for a test cycle
+	 */
+	server.tool(
+		"createTestCycleWebLink",
+		"Create a web link for a test cycle / テストサイクルにWebリンクを作成します",
+		createTestCycleWebLinkSchema,
+		async ({ testCycleIdOrKey, url, description }) => {
+			try {
+				await zephyrClient.testcycles.createTestCycleWebLink(
+					testCycleIdOrKey,
+					{
+						url,
+						...(description && { description }),
+					},
+					{},
+				);
+
+				const response = createSuccessResponse(
+					"Web link created successfully",
+					{
+						testCycleKey: testCycleIdOrKey,
+					},
+				);
+
+				return {
+					content: [{ type: "text", text: response.text }],
+					isError: false,
+				};
+			} catch (error) {
+				const errorResponse = createErrorResponse(
+					`Error creating web link for test cycle ${testCycleIdOrKey}`,
+					error,
+				);
+				return {
+					content: [{ type: "text", text: errorResponse.text }],
+					isError: true,
+				};
+			}
+		},
+	);
+
+	/**
+	 * Create an issue link for a test cycle
+	 */
+	server.tool(
+		"createTestCycleIssueLink",
+		"Create an issue link for a test cycle / テストサイクルにイシューリンクを作成します",
+		createTestCycleIssueLinkSchema,
+		async ({ testCycleIdOrKey, issueId }) => {
+			try {
+				await zephyrClient.testcycles.createTestCycleIssueLink(
+					testCycleIdOrKey,
+					{
+						issueId,
+					},
+					{},
+				);
+
+				const response = createSuccessResponse(
+					"Issue link created successfully",
+					{
+						testCycleKey: testCycleIdOrKey,
+					},
+				);
+
+				return {
+					content: [{ type: "text", text: response.text }],
+					isError: false,
+				};
+			} catch (error) {
+				const errorResponse = createErrorResponse(
+					`Error creating issue link for test cycle ${testCycleIdOrKey}`,
 					error,
 				);
 				return {

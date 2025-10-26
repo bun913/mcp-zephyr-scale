@@ -8,6 +8,7 @@ import {
 	listTestExecutionsSchema,
 	createTestExecutionSchema,
 	getTestExecutionSchema,
+	createTestExecutionIssueLinkSchema,
 } from "../../shared/schemas/executions.js";
 
 /**
@@ -146,6 +147,47 @@ export function registerTestExecutionTools(
 			} catch (error) {
 				const errorResponse = createErrorResponse(
 					`Error retrieving test execution: ${testExecutionIdOrKey}`,
+					error,
+				);
+				return {
+					content: [{ type: "text", text: errorResponse.text }],
+					isError: true,
+				};
+			}
+		},
+	);
+
+	/**
+	 * Create an issue link for a test execution
+	 */
+	server.tool(
+		"createTestExecutionIssueLink",
+		"Create an issue link for a test execution / テスト実行にイシューリンクを作成します",
+		createTestExecutionIssueLinkSchema,
+		async ({ testExecutionIdOrKey, issueId }) => {
+			try {
+				await zephyrClient.testexecutions.createTestExecutionIssueLink(
+					testExecutionIdOrKey,
+					{
+						issueId,
+					},
+					{},
+				);
+
+				const response = createSuccessResponse(
+					"Issue link created successfully",
+					{
+						testExecutionKey: testExecutionIdOrKey,
+					},
+				);
+
+				return {
+					content: [{ type: "text", text: response.text }],
+					isError: false,
+				};
+			} catch (error) {
+				const errorResponse = createErrorResponse(
+					`Error creating issue link for test execution ${testExecutionIdOrKey}`,
 					error,
 				);
 				return {

@@ -11,6 +11,8 @@ import {
 	updateTestCaseSchema,
 	getTestCaseTestStepsSchema,
 	createTestCaseTestStepsSchema,
+	createTestCaseWebLinkSchema,
+	createTestCaseIssueLinkSchema,
 } from "../../shared/schemas/cases.js";
 
 /**
@@ -278,6 +280,87 @@ export function registerTestCaseTools(
 			} catch (error) {
 				const errorResponse = createErrorResponse(
 					`Error creating test steps for test case ${testCaseKey}`,
+					error,
+				);
+				return {
+					content: [{ type: "text", text: errorResponse.text }],
+					isError: true,
+				};
+			}
+		},
+	);
+
+	/**
+	 * Create a web link for a test case
+	 */
+	server.tool(
+		"createTestCaseWebLink",
+		"Create a web link for a test case / テストケースにWebリンクを作成します",
+		createTestCaseWebLinkSchema,
+		async ({ testCaseKey, url, description }) => {
+			try {
+				const result = await zephyrClient.testcases.createTestCaseWebLink(
+					testCaseKey,
+					{
+						url,
+						...(description && { description }),
+					},
+					{},
+				);
+
+				const successResponse = createSuccessResponse(
+					"Web link created successfully",
+					{
+						link: result.data,
+					},
+				);
+
+				return {
+					content: [{ type: "text", text: successResponse.text }],
+				};
+			} catch (error) {
+				const errorResponse = createErrorResponse(
+					`Error creating web link for test case ${testCaseKey}`,
+					error,
+				);
+				return {
+					content: [{ type: "text", text: errorResponse.text }],
+					isError: true,
+				};
+			}
+		},
+	);
+
+	/**
+	 * Create an issue link for a test case
+	 */
+	server.tool(
+		"createTestCaseIssueLink",
+		"Create an issue link for a test case / テストケースにイシューリンクを作成します",
+		createTestCaseIssueLinkSchema,
+		async ({ testCaseKey, issueId }) => {
+			try {
+				const result = await zephyrClient.testcases.createTestCaseIssueLink(
+					testCaseKey,
+					{
+						issueId,
+					},
+					{},
+				);
+
+				const successResponse = createSuccessResponse(
+					"Issue link created successfully",
+					{
+						link: result.data,
+					},
+				);
+
+				return {
+					content: [{ type: "text", text: successResponse.text }],
+				};
+			} catch (error) {
+				const errorResponse = createErrorResponse(
+					`Error creating issue link for test case ${testCaseKey}`,
 					error,
 				);
 				return {

@@ -86,3 +86,24 @@ export const updateTestCycleSchema = {
 	statusName: z.string().optional().describe("Status name"),
 	customFields: z.record(z.any()).optional().describe("Custom fields"),
 };
+
+/**
+ * Schema for creating a test cycle web link
+ */
+export const createTestCycleWebLinkSchema = {
+	testCycleIdOrKey: z
+		.string()
+		.describe("Test cycle ID or key (e.g., 'KAN-R1')"),
+	url: z.string().url().describe("The web link URL"),
+	description: z.string().optional().describe("The link description"),
+};
+
+/**
+ * Schema for creating a test cycle issue link
+ */
+export const createTestCycleIssueLinkSchema = {
+	testCycleIdOrKey: z
+		.string()
+		.describe("Test cycle ID or key (e.g., 'KAN-R1')"),
+	issueId: z.number().describe("The Jira issue ID"),
+};
