@@ -57,6 +57,43 @@ Add the following configuration to your `.mcp.json`:
 
 Replace `/absolute/path/to/mcp-zephyr-scale` with the actual absolute path to your local repository.
 
+### Using with Atlassian (JIRA) MCP Server
+
+Since Zephyr Scale is a Jira plugin, it's recommended to use the official Atlassian MCP Server alongside this Zephyr Scale MCP Server. This allows you to access both JIRA and Zephyr Scale functionality without duplicating JIRA-related features.
+
+Add the Atlassian MCP Server to your `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "zephyr-scale": {
+      "command": "node",
+      "args": ["/absolute/path/to/mcp-zephyr-scale/dist/index.js"],
+      "env": {
+        "ZEPHYR_API_TOKEN": "your-api-token-here",
+        "JIRA_PROJECT_KEY": "YOUR_PROJECT"
+      }
+    },
+    "atlassian": {
+      "url": "https://mcp.atlassian.com/v1/sse"
+    }
+  }
+}
+```
+
+#### Initial Authentication
+
+When you first add the Atlassian MCP Server:
+1. The server will prompt you to authorize access via OAuth
+2. You'll be redirected to Atlassian to complete authentication
+3. Select which products to allow access (Jira and/or Confluence)
+4. Click "Approve" to complete the authentication
+
+#### Reauthentication
+
+If your authentication expires, you can reconnect using:
+- **Claude Code**: Run the `/mcp` command to manage MCP server connections and select "Reconnect" for the Atlassian server
+
 ## License
 
 MIT
