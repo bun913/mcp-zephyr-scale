@@ -1,6 +1,6 @@
 {
   "name": "mcp-zephyr-scale",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "MCP Server for Zephyr test management tool",
   "keywords": [
     "zephyr",
